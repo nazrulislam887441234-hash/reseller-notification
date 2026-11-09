@@ -26,10 +26,12 @@ export default {
 
     try {
       const data = await request.json();
-      const { name, phone, WhatsApp, email, uid } = data;
+      const { name, phone, email, uid } = data;
+      // ✅ FIXED: Frontend এখন whatsApp (ছোট w) পাঠায়, তাই দুইটাই সাপোর্ট করলাম
+      const whatsApp = data.whatsApp || data.WhatsApp;
 
       // Basic validation
-      if (!name || !phone || !WhatsApp || !email || !uid) {
+      if (!name || !phone || !whatsApp || !email || !uid) {
         return new Response(JSON.stringify({ error: "Missing required fields" }), {
           status: 400,
           headers: {
@@ -51,7 +53,7 @@ export default {
 
       const safeName = escapeHtml(name);
       const safePhone = escapeHtml(phone);
-      const safeWhatsApp = escapeHtml(WhatsApp);
+      const safeWhatsApp = escapeHtml(whatsApp);
       const safeEmail = escapeHtml(email);
       const safeUid = escapeHtml(uid);
       
